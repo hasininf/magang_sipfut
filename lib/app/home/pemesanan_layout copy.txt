@@ -1,0 +1,263 @@
+import 'package:dropdown_model_list/dropdown_model_list.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:sipfut_app/app/home/pemesananDetail_layout.dart';
+
+class Pemesanan extends StatefulWidget {
+  const Pemesanan({super.key});
+
+  @override
+  State<Pemesanan> createState() => _PemesananState();
+}
+
+class _PemesananState extends State<Pemesanan> {
+  DateTime pilihTanggal = DateTime.now();
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "Jatin Sharma"),
+    OptionItem(id: "2", title: "Puneet Chand"),
+    OptionItem(id: "3", title: "Vikas Bhardwaj"),
+    OptionItem(id: "4", title: "Rakesh Kumar"),
+    OptionItem(id: "5", title: "Nitish Kumar")
+  ]);
+  OptionItem optionItemSelected = OptionItem(title: "Pilih Lapangan");
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController _dateController = TextEditingController();
+
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101),
+        initialDatePickerMode: DatePickerMode.day, // Hanya menampilkan tanggal
+      );
+      if (picked != null && picked != DateTime.now()) {
+        _dateController.text =
+            picked.toString().substring(0, 10); // Mengubah nilai inputan setelah dipilih
+        print('Lapangan $picked');
+        // await getData();
+      }
+    }
+
+    Future getData() async {
+      var uri = Uri.parse('http://192.168.67.48:8000/api/lapangan');
+      var response = await http.get(uri);
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        print('object');
+        // setState(() {
+        //   // data = json.decode(response.body);
+        // });
+      } else {
+        print('no');
+      }
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: AppBar(
+        title: Text(
+          'Pemesanan',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xffD0F8DB),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 50,
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                // color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    _selectDate(context);
+                    getData(); // Memanggil fungsi _selectDate ketika inputan diklik
+                  },
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: _dateController,
+                      textAlign: TextAlign.center,
+                      // maxLength: 10,
+                      decoration: InputDecoration(
+                        labelText: 'Pilih Tanggal',
+                        hintText: DateTime.now().toString().substring(0, 10),
+                        // border: OutlineInputBorder(
+                        //   borderRadius: BorderRadius.all(Radius.circular(15)),
+                        // ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tanggal tidak boleh kosong';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SelectDropList(
+              itemSelected: optionItemSelected,
+              dropListModel: dropListModel,
+              showIcon: false, // Show Icon in DropDown Title
+              showArrowIcon: true, // Show Arrow Icon in DropDown
+              showBorder: true,
+              paddingTop: 0,
+              // icon: const Icon(
+              //   Icons.person,
+              //   color: Colors.black,
+              // ),
+              onOptionSelected: (optionItem) {
+                optionItemSelected = optionItem;
+                setState(() {});
+              },
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  children: [
+                    Card(
+                      color: Color(0xffD0F8DB),
+                      elevation: 1, // Tingkat elevasi kartu (bayangan)
+                      margin:
+                          EdgeInsets.only(top: 5), // Jarak antara kartu dengan widget di sekitarnya
+                      child: ListTile(
+                        // isThreeLine: true,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '07:00 s/d 08:00',
+                              style: TextStyle(),
+                            ),
+                            Text(
+                              'Tersedia',
+                              style: TextStyle(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => PemesananDetail()));
+                          // Aksi ketika kartu diklik
+                        },
+                      ),
+                    ),
+                    Card(
+                      color: Color(0xffD0F8DB),
+                      elevation: 1, // Tingkat elevasi kartu (bayangan)
+                      margin:
+                          EdgeInsets.only(top: 5), // Jarak antara kartu dengan widget di sekitarnya
+                      child: ListTile(
+                        // isThreeLine: true,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '07:00 s/d 08:00',
+                              style: TextStyle(),
+                            ),
+                            Text(
+                              'Tersedia',
+                              style: TextStyle(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          // Aksi ketika kartu diklik
+                        },
+                      ),
+                    ),
+                    Card(
+                      color: Color(0xffD0F8DB),
+                      elevation: 1, // Tingkat elevasi kartu (bayangan)
+                      margin:
+                          EdgeInsets.only(top: 5), // Jarak antara kartu dengan widget di sekitarnya
+                      child: ListTile(
+                        // isThreeLine: true,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '07:00 s/d 08:00',
+                              style: TextStyle(),
+                            ),
+                            Text(
+                              'Tersedia',
+                              style: TextStyle(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          // Aksi ketika kartu diklik
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardJadwal extends StatelessWidget {
+  const CardJadwal({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Color(0xffD0F8DB),
+      elevation: 1, // Tingkat elevasi kartu (bayangan)
+      margin: EdgeInsets.only(top: 5), // Jarak antara kartu dengan widget di sekitarnya
+      child: ListTile(
+        // isThreeLine: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '10:00 s/d 11:00',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            Text(
+              'Sudah dipesan',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

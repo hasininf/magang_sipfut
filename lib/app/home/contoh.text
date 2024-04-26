@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+
+class Pemesanan extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Two Box Page'),
+      ),
+      body: Column(
+        children: [
+          // Kotak atas
+          Container(
+            height: 200,
+            color: Colors.blue,
+            child: Center(
+              child: Text(
+                'Kotak Atas',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+          ),
+          // Kotak bawah yang dapat di-scroll
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                color: Colors.green,
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Isi dari kotak bawah yang dapat di-scroll
+                    Container(
+                      height: 100,
+                      color: Colors.orange,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          'Isi 1',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      color: Colors.orange,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          'Isi 2',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      color: Colors.orange,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          'Isi 3',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      color: Colors.orange,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          'Isi 4',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      color: Colors.orange,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          'Isi 5',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
